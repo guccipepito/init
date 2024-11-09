@@ -1643,7 +1643,7 @@ else:
         
         display_finnhub_news()
 
-        file_path = 'Copie de export-6.xlsx'
+        file_path = 'export-12.xlsx'
         display_excel_file(file_path)
         
 
