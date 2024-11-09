@@ -976,25 +976,41 @@ def get_finnhub_news_ticker(ticker):
         st.error("Erreur lors de la récupération des nouvelles.")
         return []
 
-def display_excel_file(file_path):
-    # Lire le fichier Excel
-    df = pd.read_excel(file_path)
+def display_excel_file(file_path=None):
+    # Option pour uploader un fichier si file_path n'est pas fourni
+    if file_path is None:
+        uploaded_file = st.file_uploader("Choisissez un fichier Excel", type=["xlsx"])
+        if uploaded_file is not None:
+            file_path = uploaded_file
+        else:
+            st.warning("Veuillez télécharger un fichier Excel.")
+            return  # Sortie anticipée si aucun fichier n'est fourni
 
-    # Appliquer un style professionnel avec pandas
-    styled_df = df.style.set_properties(**{
-        'background-color': '#f5f5f5',
-        'color': '#333333',
-        'border-color': 'black',
-        'font-size': '12pt',
-        'text-align': 'center',
-    }).format(precision=2)  # Ajuster le formatage, par exemple, 2 décimales
+    try:
+        # Lire le fichier Excel
+        df = pd.read_excel(file_path)
 
-    # Ajouter un titre et une description
-    st.title("Choix StockGenius")
-    #st.write("Ce tableau présente les données extraites du fichier Excel, formatées pour une meilleure lisibilité.")
+        # Appliquer un style professionnel avec pandas
+        styled_df = df.style.set_properties(**{
+            'background-color': '#f5f5f5',
+            'color': '#333333',
+            'border-color': 'black',
+            'font-size': '12pt',
+            'text-align': 'center',
+        }).format(precision=2)  # Ajuster le formatage, par exemple, 2 décimales
 
-    # Afficher le tableau avec Streamlit
-    st.dataframe(styled_df, use_container_width=True)
+        # Ajouter un titre et une description
+        st.title("Choix StockGenius")
+        st.write("Ce tableau présente les données extraites du fichier Excel, formatées pour une meilleure lisibilité.")
+
+        # Afficher le tableau avec Streamlit
+        st.dataframe(styled_df, use_container_width=True)
+
+    except FileNotFoundError:
+        st.error(f"Le fichier '{file_path}' est introuvable. Veuillez vérifier le chemin.")
+    except Exception as e:
+        st.error(f"Une erreur est survenue lors de la lecture du fichier : {str(e)}")
+
 
     
 
