@@ -409,7 +409,7 @@ def plot_linear_regression(data):
 
     # Update layout
     fig.update_layout(
-        title='Régression Linéaire sur les Prix de Clôture',
+        title='Régression Linéaire sur les Prix de Clôture' ,
         xaxis_title='Date',
         yaxis_title='Prix',
         plot_bgcolor='white',
@@ -1630,7 +1630,7 @@ else:
             locationmode='country names',
             color='Total Debt (US$)',
             hover_name='Country',
-            title='Dette publique par pays',
+            title='Dette publique par pays - COVID-19',
             color_continuous_scale=px.colors.sequential.Plasma
         )
 
@@ -1712,7 +1712,7 @@ else:
 
         # Set the title that appears at the top of the page.
         '''
-        # :world_map: Produit Intérieur Brut (PIB) par Pays
+        # :classical_building: Produit Intérieur Brut (PIB) par Pays
 
         '''
 
@@ -1810,7 +1810,7 @@ else:
         display_finnhub_news()
 
         # Affichage du contenu HTML dans Streamlit
-        st.markdown(scrolling_logos, unsafe_allow_html=True)
+        #st.markdown(scrolling_logos, unsafe_allow_html=True)
 
     if app_mode == 'Recherche':
         ticker = st.text_input('Entrez le symbole du ticker (par ex. AAPL)', 'AAPL')
@@ -2083,13 +2083,13 @@ else:
                 S, strikes, market_prices, T, r, _ = fetch_option_data(ticker, expiry_date)
                 if S is not None:
                     ivs = [implied_volatility(S, K, T, r, P) for K, P in zip(strikes, market_prices)]
-                    st.write("# Données sur les options")
+                    #st.write("# Données sur les options")
                     option_data = pd.DataFrame({
                         'Strike': strikes,
                         'Prix du marché': market_prices,
                         'Volatilité implicite': ivs
                     })
-                    display_option_data(strikes, market_prices, ivs)
+                    #display_option_data(strikes, market_prices, ivs)
                     plot_volatility_surface(ticker, expiry_date, forecast_days)
                     st.write(f"*Avertissement : Ce graphique est fourni à titre informatif seulement et ne doit pas être utilisé pour prendre des décisions financières. Utilisation à des fins personnelles uniquement.")
 
@@ -3092,7 +3092,7 @@ else:
             st.plotly_chart(fig)
             st.write(f"*Avertissement : Ce graphique est fourni à titre informatif seulement et ne doit pas être utilisé pour prendre des décisions financières. Utilisation à des fins personnelles uniquement.")
 
-        st.title(f":bar_chart: Modèle Deep Learning")
+        st.title(f":bar_chart: Modèle Deep Learning StockGenius")
 
         # Sélection de l'utilisateur
         ticker = st.text_input("Entrez le symbole de l'action (ex: AAPL):", value='AAPL')
