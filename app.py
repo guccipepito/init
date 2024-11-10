@@ -1323,7 +1323,7 @@ else:
 
     # Sidebar
     #st.sidebar.title('Menu')
-    app_mode = st.sidebar.selectbox('Choisissez une section',
+    app_mode = st.sidebar.selectbox(':mag_right: Choisissez une section',
                                     ['Accueil', 'Recherche', 'Options', 'Prédictions', 'Gestion des Actifs', 'Backtesting - StockGenius', 'Contact'
                                         ])
 
@@ -1331,7 +1331,7 @@ else:
     if app_mode == 'Accueil':
         
         # Sidebar
-        st.sidebar.title('Outils')
+        st.sidebar.title(f':speaking_head_in_silhouette: Outils')
         st.sidebar.markdown("""
             <ul style="list-style-type:none;">
                 <li><a href="https://tubitv.com/live/400000081/bloomberg-tv" target="_blank" style="color: #FFFFFF; text-decoration: none;">Bloomberg TV</a></li>
