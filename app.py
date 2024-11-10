@@ -814,7 +814,7 @@ def filter_option_trading_news(news_list):
 def display_finnhub_news():
     news = get_finnhub_news()
     if news:
-        st.subheader('Actualités Financières')
+        st.title(f':chart: Actualités Financières')
         # Limiter à 10 articles les plus récents
         top_news = news[:5]
         for article in top_news:
@@ -1000,8 +1000,8 @@ def display_excel_file(file_path=None):
         }).format(precision=2)  # Ajuster le formatage, par exemple, 2 décimales
 
         # Ajouter un titre et une description
-        st.title("Choix StockGenius")
-        st.write("Ce tableau présente les données extraites du fichier Excel, formatées pour une meilleure lisibilité.")
+        st.title(f":calendar: Liste d'entreprises à surveiller")
+        #st.write("Ce tableau présente les données extraites du fichier Excel, formatées pour une meilleure lisibilité.")
 
         # Afficher le tableau avec Streamlit
         st.dataframe(styled_df, use_container_width=True)
@@ -1318,13 +1318,13 @@ if not st.session_state.authenticated:
     login()
 else:
     # Streamlit app
-    st.markdown("<h1 style='text-align: center; color: #FFFFFF;'>StockGenius</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center; color: #FFFFFF;'>StockGenius ©</h1>", unsafe_allow_html=True)
     
 
     # Sidebar
     #st.sidebar.title('Menu')
     app_mode = st.sidebar.selectbox('Choisissez une section',
-                                    ['Test','Accueil', 'Recherche', 'Options', 'Prédictions', 'Gestion des Actifs', 'Backtesting - StockGenius', 'Contact'
+                                    ['Accueil', 'Recherche', 'Options', 'Prédictions', 'Gestion des Actifs', 'Backtesting - StockGenius', 'Contact'
                                         ])
 
     # Tabs content
@@ -1648,8 +1648,7 @@ else:
             opacity=1
         )
 
-        # Afficher le graphique
-        st.plotly_chart(fig)
+    
 
         import streamlit as st
         import pandas as pd
@@ -1713,11 +1712,8 @@ else:
 
         # Set the title that appears at the top of the page.
         '''
-        # :earth_americas: GDP dashboard
+        # :earth_americas: PIB par Pays
 
-        Browse GDP data from the [World Bank Open Data](https://data.worldbank.org/) website. As you'll
-        notice, the data only goes to 2022 right now, and datapoints for certain years are often missing.
-        But it's otherwise a great (and did I mention _free_?) source of data.
         '''
 
         # Add some spacing
@@ -1728,7 +1724,7 @@ else:
         max_value = gdp_df['Year'].max()
 
         from_year, to_year = st.slider(
-            'Which years are you interested in?',
+            'Temps',
             min_value=min_value,
             max_value=max_value,
             value=[min_value, max_value])
@@ -1739,9 +1735,9 @@ else:
             st.warning("Select at least one country")
 
         selected_countries = st.multiselect(
-            'Which countries would you like to view?',
+            'Pays',
             countries,
-            ['DEU', 'FRA', 'GBR', 'BRA', 'MEX', 'JPN'])
+            ['CAN', 'USA', 'CHN', 'FRA', 'MEX', 'JPN'])
 
         ''
         ''
@@ -1754,7 +1750,7 @@ else:
             & (from_year <= gdp_df['Year'])
         ]
 
-        st.header('GDP over time', divider='gray')
+        st.header('PIB depuis 2022', divider='gray')
 
         ''
 
@@ -1772,7 +1768,7 @@ else:
         first_year = gdp_df[gdp_df['Year'] == from_year]
         last_year = gdp_df[gdp_df['Year'] == to_year]
 
-        st.header(f'GDP in {to_year}', divider='gray')
+        st.header(f'PIB en {to_year}', divider='gray')
 
         ''
 
@@ -1800,15 +1796,18 @@ else:
                 )
  
 
+        # Afficher le graphique
+        st.plotly_chart(fig)
 
         # Tabs content
         #st.write(f"# Top 10 des actualités du jour")
         
-        display_finnhub_news()
+       
 
         file_path = 'export-12.xlsx'
         display_excel_file(file_path)
         
+        display_finnhub_news()
 
         # Affichage du contenu HTML dans Streamlit
         st.markdown(scrolling_logos, unsafe_allow_html=True)
@@ -3093,8 +3092,7 @@ else:
             st.plotly_chart(fig)
             st.write(f"*Avertissement : Ce graphique est fourni à titre informatif seulement et ne doit pas être utilisé pour prendre des décisions financières. Utilisation à des fins personnelles uniquement.")
 
-        # Interface Streamlit
-        st.title("Modèle Prédiction StockGenius")
+        st.title(f":bar_chart: Modèle Deep Learning")
 
         # Sélection de l'utilisateur
         ticker = st.text_input("Entrez le symbole de l'action (ex: AAPL):", value='AAPL')
@@ -3358,7 +3356,7 @@ else:
 
         
         # Streamlit UI
-        st.title("Backtesting Modèle Prédiction StockGenius")
+        st.title(f":chart_with_upwards_trend: Backtesting Modèle Deep Learning StockGenius")
 
         ticker = st.text_input("Entrez le ticker de l'action (ex: AAPL)", value="AAPL")
         start_date = st.date_input("Date de début", pd.to_datetime("2024-05-01"))
@@ -3661,7 +3659,7 @@ else:
                 return False
 
         # Page de contact
-        st.title("Contactez-moi")
+        st.title(f"Contactez-moi! :mailbox_with_mail:")
 
         # Formulaire de contact
         with st.form("contact_form"):
