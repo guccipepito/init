@@ -814,7 +814,7 @@ def filter_option_trading_news(news_list):
 def display_finnhub_news():
     news = get_finnhub_news()
     if news:
-        st.title(f':chart: Actualités Financières')
+        st.title(f':newspaper: Actualités Financières')
         # Limiter à 10 articles les plus récents
         top_news = news[:5]
         for article in top_news:
@@ -1000,7 +1000,7 @@ def display_excel_file(file_path=None):
         }).format(precision=2)  # Ajuster le formatage, par exemple, 2 décimales
 
         # Ajouter un titre et une description
-        st.title(f":calendar: Liste d'entreprises à surveiller")
+        st.title(f":ballot_box_with_ballot: Liste d'entreprises à surveiller")
         #st.write("Ce tableau présente les données extraites du fichier Excel, formatées pour une meilleure lisibilité.")
 
         # Afficher le tableau avec Streamlit
@@ -1294,8 +1294,8 @@ def save_backtest_results_to_csv(ticker, results, trades,folder='test1', filenam
 # Page d'authentification
 def login():
     
-    st.markdown("<h1 style='text-align: center; color: #FFFFFF;'>StockGenius</h1>", unsafe_allow_html=True)
-    st.write(f"### Connexion")
+    st.markdown("<h1 style='text-align: center; color: #FFFFFF;'>StockGenius ©</h1>", unsafe_allow_html=True)
+    st.title(f":mailbox: Connexion")
     username = st.text_input("Nom d'utilisateur")
     password = st.text_input("Mot de passe", type="password")
 
@@ -1712,7 +1712,7 @@ else:
 
         # Set the title that appears at the top of the page.
         '''
-        # :earth_americas: PIB par Pays
+        # :world_map: Produit Intérieur Brut (PIB) par Pays
 
         '''
 
