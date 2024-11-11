@@ -1323,12 +1323,18 @@ else:
 
     # Sidebar
     #st.sidebar.title('Menu')
-    app_mode = st.sidebar.selectbox(':mag_right: Choisissez une section',
-                                    ['Accueil', 'Recherche', 'Options', 'Prédictions', 'Gestion des Actifs', 'Backtesting - StockGenius', 'Contact'
-                                        ])
+    app_mode = st.sidebar.selectbox('Choisissez une section',
+                                ['🏠 Tableau de Bord', 
+                                 '🔍 Analyse de Marché', 
+                                 '📈 Options Boursières', 
+                                 '🤖 Prédictions d\'Investissement', 
+                                 '💼 Gestion de Portefeuille', 
+                                 '💡 Calculateur de Valeur (Graham)', 
+                                 '📊 Backtesting - StockGenius', 
+                                 '📞 Contactez-Nous'])
 
     # Tabs content
-    if app_mode == 'Accueil':
+    if app_mode == '🏠 Tableau de Bord':
         
         # Sidebar
         st.sidebar.title(f':speaking_head_in_silhouette: Outils')
@@ -1812,7 +1818,7 @@ else:
         # Affichage du contenu HTML dans Streamlit
         #st.markdown(scrolling_logos, unsafe_allow_html=True)
 
-    if app_mode == 'Recherche':
+    if app_mode == '🔍 Analyse de Marché':
         ticker = st.text_input('Entrez le symbole du ticker (par ex. AAPL)', 'AAPL')
         start_date = st.date_input('Date de début', dt.date(2020, 1, 1))
         end_date = st.date_input('Date de fin', dt.date.today())
@@ -2040,7 +2046,7 @@ else:
                 else:
                     st.write(f"Aucune donnée historique disponible pour le ticker {ticker} sur la période {period}.")
                     
-    if app_mode == 'Prédictions':
+    if app_mode == '🤖 Prédictions d\'Investissement':
         ticker = st.text_input('Entrez le symbole du ticker (par ex. AAPL)', 'AAPL')
         start_date = st.date_input('Date de début', dt.date(2000, 1, 1))
         end_date = st.date_input('Date de fin', dt.date.today())
@@ -2069,7 +2075,7 @@ else:
                 st.pyplot(fig)
                 st.write(f"*Avertissement : Ce graphique est fourni à titre informatif seulement et ne doit pas être utilisé pour prendre des décisions financières. Utilisation à des fins personnelles uniquement.")
 
-    if app_mode == 'Options':
+    if app_mode == '📈 Options Boursières':
         ticker = st.text_input('Entrez le symbole du ticker (par ex. AAPL)', 'AAPL')
         expiry_date = st.selectbox('Date d\'expiration', st.session_state.available_expirations)
         forecast_days = st.number_input("Nombre de jours à prédire", min_value=1, max_value=30, value=7)
@@ -2488,7 +2494,7 @@ else:
                 plot_prediction(ticker, forecast_days, predicted_price, win_rate)
                 st.write(f"*Avertissement : Ce graphique est fourni à titre informatif seulement et ne doit pas être utilisé pour prendre des décisions financières. Utilisation à des fins personnelles uniquement.")
              
-    if app_mode == 'Gestion des Actifs':
+    if app_mode == '💼 Gestion de Portefeuille':
         # Entrée de tickers sous forme de chaîne de caractères
         
         tickers_input = st.text_input("Entrez les tickers (séparés par des virgules)", "BFH, SDE.TO, AAPL")
@@ -2904,7 +2910,7 @@ else:
                 if st.button('Télécharger'):
                     bt2.plot()
 
-    if app_mode == "Backtesting - StockGenius":
+    if app_mode == "📊 Backtesting - StockGenius":
 
         import streamlit as st
         import numpy as np
@@ -3638,7 +3644,10 @@ else:
                     delta_color=delta_color
                 )
     
-    if app_mode == "Contact":
+   
+   
+    if app_mode == "📞 Contactez-Nous":
+
 
         import streamlit as st
         import yagmail
@@ -3659,7 +3668,7 @@ else:
                 return False
 
         # Page de contact
-        st.title(f"Contactez-moi! :mailbox_with_mail:")
+        #st.title(f"Contactez-moi! :mailbox_with_mail:")
 
         # Formulaire de contact
         with st.form("contact_form"):
@@ -3679,3 +3688,89 @@ else:
                         st.error("Une erreur est survenue lors de l'envoi de votre message. Veuillez réessayer.")
                 else:
                     st.error("Veuillez remplir tous les champs avant d'envoyer.")
+
+    if app_mode == "💡 Calculateur de Valeur (Graham)":
+        import streamlit as st
+        import yfinance as yf
+        import pandas as pd
+
+        st.title(f":scroll: Calculateur de la Valeur Boursière selon Graham")
+
+        # Entrées
+        ticker = st.text_input('Symbole boursier', 'AAPL')
+        ng_pe = st.number_input('Ratio Cours/Bénéfices sans croissance', value=8.5, min_value=0.0, step=0.1)
+        multiplier = st.number_input('Multiplicateur du taux de croissance', value=2.0, min_value=0.0, step=0.1)
+        marge = st.number_input('Marge de sécurité (%)', value=35.0, min_value=0.0, max_value=100.0, step=1.0)
+
+        # Fonction pour obtenir les données financières
+        def obtenir_donnees(ticker, ng_pe, multiplier, marge):
+            action = yf.Ticker(ticker)
+            
+            # Récupérer le prix actuel de l'action
+            prix_actuel = action.history(period='1d')['Close'][0]
+            
+            # Récupérer le BPA (bénéfice par action) et le taux de croissance (sur 5 ans)
+            bpa = action.info.get('trailingEps', None)
+            taux_croissance = action.info.get('earningsGrowth', None) * 100  # conversion en pourcentage
+            
+            # Récupérer le rendement obligataire actuel (proxy via taux à court terme du trésor)
+            rendement_obligataire_df = yf.download('^IRX', start="2023-01-01", end="2023-12-31")
+            rendement_actuel = rendement_obligataire_df['Close'].iloc[-1]
+            
+            resultat = {
+                "prix_actuel": float(prix_actuel),
+                "bpa": float(bpa) if bpa else None,
+                "taux_croissance": float(taux_croissance) if taux_croissance else None,
+                "rendement_actuel": float(rendement_actuel),
+                "ng_pe": float(ng_pe),
+                "multiplier": float(multiplier),
+                "marge": float(marge)
+            }
+            return resultat
+
+        # Lorsque le bouton Calculer est cliqué
+        if st.button('Calculer'):
+            try:
+                donnees = obtenir_donnees(ticker, ng_pe, multiplier, marge)
+                
+                # Afficher les métriques financières de base
+                st.markdown("""---""")
+                col1, col2, col3 = st.columns(3)
+                
+                with col1:
+                    st.metric(label="BPA ($)", value=donnees["bpa"])
+                with col2:
+                    st.metric(label="Taux de Croissance Projeté (5 ans)", value=donnees["taux_croissance"])
+                with col3:
+                    st.metric(label="Rendement Obligataire Actuel (%)", value=donnees["rendement_actuel"])
+                
+                st.markdown("""---""")
+                
+                # Calcul de la valeur intrinsèque
+                valeur_intrinseque = (donnees["bpa"] * (donnees["ng_pe"] + donnees["multiplier"] * donnees["taux_croissance"]) * 4.4) / donnees["rendement_actuel"]
+                valeur_intrinseque = round(valeur_intrinseque, 2)
+                prix_action = round(donnees["prix_actuel"], 2)
+                taux_marge = donnees["marge"] / 100
+                prix_acceptable = (1 - taux_marge) * valeur_intrinseque
+                prix_acceptable = round(prix_acceptable, 2)
+
+                # Afficher les résultats
+                col4, col5, col6 = st.columns(3)
+                with col4:
+                    st.subheader('Prix actuel de l\'action ($)')
+                    st.subheader(f"**:blue[{prix_action}]**")
+                with col5:
+                    st.subheader('Valeur Intrinsèque de l\'action ($)')
+                    st.subheader(f"**:blue[{valeur_intrinseque}]**")
+                with col6:
+                    st.subheader('Prix d\'achat acceptable ($)')
+                    st.subheader(f"**:blue[{prix_acceptable}]**")
+
+            
+            except Exception as e:
+                st.error(f"Erreur lors de la récupération des données pour {ticker} : {str(e)}")
+
+        else:
+            st.text("Cliquez sur le bouton Calculer pour obtenir la Valeur de Graham")
+        
+    
